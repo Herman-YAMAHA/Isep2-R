@@ -1,0 +1,137 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+  13pt,
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+    \setmainfont[]{Times New Roman}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[top=2.5cm,bottom=2.5cm,left=3cm,right=2.5cm,margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Lettre de motivation},
+  pdfauthor={Herman YAMAHA},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Lettre de motivation}
+\author{Herman YAMAHA}
+\date{02 mai 2025}
+
+\begin{document}
+\maketitle
+
+Herman YAMAHA\\
+Étudiant en 2ᵉ année à l'ENSAE de Dakar\\
+Téléphone : +221 77 552 54 41\\
+Email :
+\href{mailto:herman.yamaha@gmail.com}{\nolinkurl{herman.yamaha@gmail.com}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{flushright}
+Dakar, le 02 mai 2025  
+\end{flushright}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{flushright}
+A l'attention du directeur général \\
+              ANSD \\
+   Cerf-Volant, Colobane \\
+       Dakar, Sénégal
+\end{flushright}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+Objet : Candidature à un stage en économie appliquée -- Étudiant à
+l'ENSAE de Dakar
+
+Monsieur le directeur général,
+
+Actuellement étudiant en deuxième année à l'École Nationale de la
+Statistique et de l'Analyse Économique (ENSAE) de Dakar, je suis à la
+recherche d'un stage académique d'une durée de deux à trois mois à
+partir de juillet. Intéressé par l'analyse économique et statistique
+appliquée aux politiques publiques, je souhaite intégrer votre structure
+afin d'y renforcer mes compétences et contribuer activement à vos
+travaux.
+
+Ma formation à l'ENSAE m'a permis d'acquérir des bases solides en
+microéconomie, économétrie, statistique inférentielle ainsi qu'en
+programmation avec R et Python. En parallèle, j'ai mené des travaux
+pratiques sur l'analyse de données agricoles selon les recommandations
+de la Banque Mondiale, que j'ai publiés sur GitHub. Ces expériences
+m'ont donné le goût du travail rigoureux et m'ont familiarisé avec les
+outils de traitement des données réelles.
+
+Rigoureux, curieux et doté d'un bon esprit d'analyse, je suis motivé à
+m'investir pleinement dans les missions que vous voudrez bien me
+confier. Intégrer votre équipe serait pour moi l'occasion de découvrir
+un environnement professionnel exigeant, tout en contribuant
+concrètement à vos projets.
+
+Je vous remercie par avance de l'attention que vous porterez à ma
+candidature et me tiens à votre disposition pour tout entretien à votre
+convenance.
+
+\begin{flushright}
+L’intéressé\\
+Herman YAMAHA
+\end{flushright}
+
+\end{document}

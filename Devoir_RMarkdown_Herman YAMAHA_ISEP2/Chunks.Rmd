@@ -1,0 +1,35 @@
+---
+title: "Analyse graphique"
+author: "Herman YAMAHA"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    toc: false
+    number_sections: false
+    keep_tex: true
+    pandoc_args: [
+      "--variable=fontsize:12pt", 
+      "--variable=mainfont:Times New Roman", 
+      "--variable=geometry:top=2.5cm,bottom=2.5cm,left=3cm,right=2.5cm"
+    ]
+---
+
+## Visualisation des données
+
+```{r base-plot, echo=FALSE, fig.width=7, fig.height=5}
+# Graphique de base
+plot(cars$speed, cars$dist,
+     main = "Vitesse vs Distance de freinage",
+     xlab = "Vitesse (km/h)",
+     ylab = "Distance (m)",
+     col = "blue", pch = 19)
+
+library(ggplot2)
+
+ggplot(cars, aes(x = speed, y = dist)) +
+  geom_point(color = "darkred") +
+  geom_smooth(method = "lm", se = FALSE, col = "black") +
+  labs(title = "Régression : Vitesse vs Distance",
+       x = "Vitesse (km/h)",
+       y = "Distance (m)")

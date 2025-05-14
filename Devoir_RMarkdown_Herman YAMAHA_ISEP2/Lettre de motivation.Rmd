@@ -1,0 +1,61 @@
+---
+title: "Lettre de motivation"
+author: "Herman YAMAHA"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    includes: null
+    keep_tex: true
+    number_sections: false
+    toc: false
+    pandoc_args: [
+      "--variable=fontsize:13pt", 
+      "--variable=mainfont:Times New Roman", 
+      "--variable=geometry:top=2.5cm,bottom=2.5cm,left=3cm,right=2.5cm"
+      ]
+---
+
+Herman YAMAHA  
+Étudiant en 2ᵉ année à l’ENSAE de Dakar  
+Téléphone : +221 77 552 54 41  
+Email : herman.yamaha@gmail.com  
+
+---
+
+\begin{flushright}
+Dakar, le `r format(Sys.Date(), '%d %B %Y')`  
+\end{flushright}
+
+---
+
+\begin{flushright}
+A l'attention du directeur général \\
+              ANSD \\
+   Cerf-Volant, Colobane \\
+       Dakar, Sénégal
+\end{flushright}
+
+---
+
+
+Objet : Candidature à un stage en économie appliquée – Étudiant à l’ENSAE de Dakar
+
+  Monsieur le directeur général,
+
+  Actuellement étudiant en deuxième année à l’École Nationale de la Statistique et de l’Analyse Économique (ENSAE) de Dakar, je suis à la recherche d’un stage académique d’une durée de deux à trois mois à partir de juillet. Intéressé par l’analyse économique et statistique appliquée aux politiques publiques, je souhaite intégrer votre structure afin d’y renforcer mes compétences et contribuer activement à vos travaux.
+
+     
+  Ma formation à l’ENSAE m’a permis d’acquérir des bases solides en microéconomie, économétrie, statistique inférentielle ainsi qu’en programmation avec R et Python. En parallèle, j’ai mené des travaux pratiques sur l’analyse de données agricoles selon les recommandations de la Banque Mondiale, que j’ai publiés sur GitHub. Ces expériences m’ont donné le goût du travail rigoureux et m’ont familiarisé avec les outils de traitement des données réelles.
+
+
+  Rigoureux, curieux et doté d’un bon esprit d’analyse, je suis motivé à m’investir pleinement dans les missions que vous voudrez bien me confier. Intégrer votre équipe serait pour moi l’occasion de découvrir un environnement professionnel exigeant, tout en contribuant concrètement à vos projets.
+
+
+  Je vous remercie par avance de l’attention que vous porterez à ma candidature et me tiens à votre disposition pour tout entretien à votre convenance.
+    
+
+\begin{flushright}
+L’intéressé\\
+Herman YAMAHA
+\end{flushright}
