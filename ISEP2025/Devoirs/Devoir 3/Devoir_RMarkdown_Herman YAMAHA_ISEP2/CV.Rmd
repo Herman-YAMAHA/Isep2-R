@@ -1,0 +1,77 @@
+---
+title: "Curriculum Vitae"
+author: "Herman YAMAHA"
+date: "`r format(Sys.Date(), '%d %B %Y')`"
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    pandoc_args: [
+      "--variable=fontsize:11pt",
+      "--variable=mainfont:Times New Roman",
+      "--variable=geometry:top=2cm,bottom=2cm,left=2.5cm,right=2.5cm"
+    ]
+---
+
+# Herman YAMAHA
+
+**Étudiant en statistique appliquée à l'économie**  
+ENSAE de Dakar — 2ᵉ année  
+Téléphone : +221 77 856 23 78  
+Email : herman.yamaha@example.com  
+GitHub : github.com/herman-yamaha  
+LinkedIn : linkedin.com/in/herman-yamaha  
+
+---
+
+##  Formation
+
+**ENSAE de Dakar - Sénégal**  
+_Statistique et économie appliquée – 2ᵉ année_  
+2023 – aujourd’hui
+
+**Collège LA REUSSITE – Loum - Cameroun**  
+_Baccalauréat scientifique_  
+2020 – 2023
+
+---
+
+## ️ Compétences
+
+- **Statistiques** : inférence, économétrie, microéconomie appliquée
+- **Analyse de données** : R, Python, Excel
+- **Programmation** : R Markdown, Git/GitHub
+- **Visualisation** : ggplot2, matplotlib
+- **Langages** : R, Python, LaTeX, SQL (débutant)
+
+---
+
+##  Expérience
+
+**Analyse de données agricoles (TP ENSAE)**  
+_Février 2025_  
+- Nettoyage et traitement de fichiers Excel/CSV
+- Calcul d’indicateurs de performance agricole
+- Visualisation de séries temporelles et tableaux dynamiques  
+- Présentation orale et publication GitHub
+
+---
+
+##  Projets
+
+- **Exposé : Dette publique dans l’UEMOA** – Approche microéconomique
+- **Lettre de motivation et CV en RMarkdown** – Génération automatisée de documents PDF
+- **Projet personnel : Dashboard en R Shiny (en cours)**
+
+---
+
+##  Langues
+
+- Français : Première langue  
+- Anglais : Bon niveau (lu, écrit, parlé)  
+- Espagnol : Notions de base
+
+---
+
+\begin{flushright}
+Mis à jour le `r format(Sys.Date(), '%d %B %Y')`
+\end{flushright}
