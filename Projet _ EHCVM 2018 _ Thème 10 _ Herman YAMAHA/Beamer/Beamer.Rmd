@@ -1,0 +1,431 @@
+---
+title: ""
+author: ""
+date: ""
+output:
+  beamer_presentation:
+    theme: "Madrid"
+    colortheme: "dolphin"
+    fonttheme: "professionalfonts"
+    keep_tex: true
+    slide_level: 2
+fontsize: 11pt
+mainfont: "Arial"
+header-includes:
+  - \setbeamertemplate{footline}[frame number]
+---
+
+\begin{center}
+\includegraphics[height=2cm]{logo_ENSAE.png}
+
+\vspace{0.8cm}
+
+{\Large \textbf{Évaluation de l’impact des transferts \\[0.2cm] sur le bien-être des ménages}}
+
+\vspace{1cm}
+
+{\normalsize Réalisation de : NGAKE YAMAHA Herman Parfait}
+
+\vspace{0.5cm}
+
+{\small ISEP2 - ENSAE de Dakar}
+
+\vspace{0.5cm}
+
+{\small Sous la supervision de : M. Hamady Diallo\\ Research Scientist}
+
+{\small Année académique 2024 - 2025}
+
+\vspace{0.8cm}
+\end{center}
+
+
+\newpage
+
+
+```{r setup, include=FALSE}
+options(repos = c(CRAN = "https://cran.r-project.org"))
+knitr::opts_chunk$set(echo = TRUE)
+
+if (!requireNamespace("dplyr", quietly = TRUE)) install.packages("dplyr")
+if (!requireNamespace("haven", quietly = TRUE)) install.packages("haven")
+if (!requireNamespace("ggplot2", quietly = TRUE)) install.packages("ggplot2")
+if (!requireNamespace("ggpubr", quietly = TRUE)) install.packages("ggpubr")
+
+library(dplyr)
+library(haven)
+library(ggplot2)
+library(ggpubr)
+```
+
+
+## Plan de la présentation
+
+```{r, echo=FALSE, results='asis'}
+cat('\\tableofcontents')
+```
+
+
+\newpage
+
+
+# Introduction
+
+- Contexte général de l’étude : rôle des transferts dans les ménages sénégalais.
+- Problématique : En quoi les transferts influencent-ils le bien-être des ménages ?
+- Objectif : Évaluer l’impact des transferts sur l’éducation, la santé et les revenus non agricoles.
+
+# Données et méthodologie
+
+- Source : Enquête Harmonisée sur les Conditions de Vie des Ménages (EHCVM) 2018, Sénégal.
+- Variables clés : revenus, dépenses en santé et éducation, transferts reçus.
+- Méthodes : statistiques descriptives, régressions linéaires et logistiques.
+
+# Résultats descriptifs
+
+## 1. Analyse de la relation entre les transferts reçus et la proportion de membres scolarisés au sein des ménages
+
+```{r transferts-summary, echo=FALSE, fig.width=8, fig.height=4}
+data6 <- read_dta("C:/Users/T Informatique/Desktop/Langage R/ISEP2025/revenu_12_derniers_mois_menage_EHCVM.dta")
+data7 <- read_dta("C:/Users/T Informatique/Desktop/Langage R/ISEP2025/data_menage.dta")
+data8 <- read_dta("C:/Users/T Informatique/Desktop/Langage R/ISEP2025/depenses_menage.dta")
+
+# Fusion successive des trois bases
+data_menage_final <- data6 %>%
+  inner_join(data7, by = c("grappe", "menage")) %>%
+  inner_join(data8, by = c("grappe", "menage"))
+
+data_menage_final <- data_menage_final %>%
+  mutate(ratio_etude = 100 * nb_individus_etudes / nb_individus)
+
+# Modèle de régression
+modele <- lm(transfert_total_menage ~ ratio_etude, data = data_menage_final)
+
+# Paramètres du modèle
+a <- round(coef(modele)[1], 2)
+b <- round(coef(modele)[2], 2)
+r2 <- round(summary(modele)$r.squared, 3)
+p <- round(summary(modele)$coefficients[2, 4], 3)
+
+eq_text <- paste0("y = ", b, "x + ", a,
+                  "   |   R² = ", r2,
+                  "   |   p = ", p)
+
+# Graphique
+ggplot(data_menage_final, aes(x = ratio_etude, y = transfert_total_menage)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  annotate("text", 
+           x = 0.1, 
+           y = 9500000, 
+           label = eq_text, 
+           size = 5, 
+           hjust = 0, 
+           color = "black") +
+  labs(
+    x = "Ratio d'étudiants dans le ménage (en %)",
+    y = "Transferts reçus",
+    title = "Relation entre niveau d'éducation et transferts reçus"
+  ) +
+  coord_cartesian(ylim = c(0, 10000000))
+```
+
+
+## 1. Analyse de la relation entre les transferts reçus et la proportion de membres scolarisés au sein des ménages   
+
+### Interprétation de la regression
+
+
+La régression linéaire (\(y = 798.5x + 333551.43\)) montre une faible relation positive entre le niveau d'éducation (ratio d'étudiants par ménage) et les transferts reçus. Cependant, le \(R^2\) de **0,001** révèle que l'éducation explique seulement **0,1%** de la variation des transferts, ce qui est négligeable.     
+  
+  
+
+
+Bien que le résultat soit statistiquement significatif (\(p = 0,006\)), l'impact pratique est quasi inexistant, suggérant que d'autres facteurs non mesurés déterminent principalement les transferts.  
+  
+    
+## 1. Analyse de la relation entre les transferts reçus et la proportion de membres scolarisés au sein des ménages  
+  
+    
+Par la suite, suivant la proportion de membres scolarisés au sein des ménages, nous avons subdivisé les ménages en 04 groupes :   
+
+- Faible ([ 0 %, 25 % [)  
+
+- Modéré ([ 25 %, 50 % [)  
+
+- Élevé ([ 50 %, 75 % [)  
+
+- Très élevé ([ 75 %, 100 % [)  
+
+## 1. Analyse de la relation entre les transferts reçus et la proportion de membres scolarisés au sein des ménages  
+
+
+```{r transferts-summary2, echo=FALSE, fig.width=8, fig.height=4}
+
+# Définir les groupes de ménages selon le ratio d'étude
+data_menage_final <- data_menage_final %>%
+  mutate(groupe_ratio = cut(
+    ratio_etude,
+    breaks = c(0, 25, 50, 75, 100),
+    labels = c("Faible", "Modéré", "Élevé", "Très élevé"),
+    include.lowest = TRUE,
+    right = FALSE
+  ))
+
+# Calcul des transferts moyens par groupe (en filtrant les NA)
+df_transferts_groupes <- data_menage_final %>%
+  filter(!is.na(groupe_ratio), !is.na(transfert_total_menage)) %>%
+  group_by(groupe_ratio) %>%
+  summarise(transferts_moyens = mean(transfert_total_menage, na.rm = TRUE), .groups = "drop")
+
+# Création du graphique
+ggplot(df_transferts_groupes, aes(x = groupe_ratio, y = transferts_moyens, fill = groupe_ratio)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = round(transferts_moyens, 1)), vjust = -0.5, size = 4) +
+  scale_fill_manual(values = c("Faible" = "#A6ACAF", "Modéré" = "#85929E",
+                               "Élevé" = "#5D6D7E", "Très élevé" = "#34495E")) +
+  labs(
+    title = "Transferts moyens par groupe de ratio d'études",
+    x = "Groupe de ratio d'études",
+    y = "Montant moyen des transferts (en FCFA)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+
+```
+
+
+## 1. Analyse de la relation entre les transferts reçus et la proportion de membres scolarisés au sein des ménages   
+
+### Interprétation du graphique
+  
+  
+Le graphique montre une distribution asymétrique des transferts avec des valeurs extrêmes atteignant 25 millions FCFA, ce qui distord la visualisation. Les boîtes à moustaches (boxplots) semblent compressées en bas du graphique, indiquant que la majorité des transferts se situent bien en-dessous de 5 millions FCFA pour les quatre groupes de scolarisation (Faible à Très élevé). 
+
+
+## 2. Analyse de la relation entre les transferts reçus et les dépenses en santé  
+  
+
+```{r transferts-summary3, echo=FALSE, fig.width=8, fig.height=4}
+
+# Relation entre transferts reçus et dépenses en santé
+
+# Filtrer les dépenses de santé positives ou nulles
+data_sante <- data_menage_final %>%
+  filter(depense_sante_menage >= 0)
+
+# Modèle de régression
+modele_sante <- lm(depense_sante_menage ~ transfert_total_menage, data = data_sante)
+
+# Extraire les paramètres
+a_sante <- round(coef(modele_sante)[1], 2)
+b_sante <- round(coef(modele_sante)[2], 2)
+r2_sante <- round(summary(modele_sante)$r.squared, 3)
+p_sante <- formatC(summary(modele_sante)$coefficients[2, 4], format = "f", digits = 4)
+
+# Texte de l’équation
+eq_text_sante <- paste0("y = ", b_sante, "x + ", a_sante,
+                        "   |   R² = ", r2_sante,
+                        "   |   p = ", p_sante)
+
+# Visualisation
+ggplot(data_sante, aes(x = transfert_total_menage, y = depense_sante_menage)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  annotate("text", 
+           x = 500000, 
+           y = 3900000,  # Texte bien en haut
+           label = eq_text_sante, 
+           size = 5, 
+           hjust = 0, 
+           color = "black") +
+  labs(
+    x = "Transferts reçus par le ménage (en FCFA)",
+    y = "Dépenses de santé du ménage (en FCFA)",
+    title = "Relation entre transferts reçus et dépenses de santé"
+  ) +
+  coord_cartesian(xlim = c(0, 10000000), ylim = c(0, 4000000)) +
+  theme_minimal()
+```
+
+
+## 2. Analyse de la relation entre les transferts reçus et les dépenses en santé  
+
+### Interprétation de la regression   
+  
+    
+La régression linéaire montre une relation faible mais statistiquement significative entre les transferts reçus et les dépenses de santé (p < 0.001). L'équation y = 0.04x + 122 643 indique qu'une augmentation de 1 FCFA de transferts est associée à une hausse de 0,04 FCFA des dépenses de santé. Cependant, le R² de 0,016 révèle que seulement 1,6% de la variation des dépenses de santé s'explique par les transferts, suggérant que d'autres facteurs non pris en compte dominent cette relation. La présence de valeurs extrêmes (jusqu'à 2,5-5 millions FCFA) visible dans le graphique pourrait influencer ces résultats.
+
+
+## 3.  Analyse de la relation entre transferts reçus et revenu total non issu du rendement agricole (emploi, non emploi et transfert)
+
+
+```{r transferts-summary4, echo=FALSE, fig.width=8, fig.height=4}
+
+summary_stats_filtre <- data_menage_final %>%
+  filter(!is.na(part_transferts_revenu_total)) %>%
+  summarise(
+    Effectif = n(),
+    Moyenne = mean(part_transferts_revenu_total),
+    Médiane = median(part_transferts_revenu_total),
+    Écart_type = sd(part_transferts_revenu_total),
+    Min = min(part_transferts_revenu_total),
+    Max = max(part_transferts_revenu_total),
+    Q1 = quantile(part_transferts_revenu_total, 0.25),
+    Q3 = quantile(part_transferts_revenu_total, 0.75)
+  )
+
+# Histogramme avec pourcentages sans le symbole %
+data_menage_final %>%
+  filter(!is.na(part_transferts_revenu_total)) %>%
+  ggplot(aes(x = part_transferts_revenu_total)) +
+  geom_histogram(
+    aes(y = after_stat(count / sum(count))),
+    binwidth = 5,
+    fill = "steelblue",
+    color = "white",
+    alpha = 0.8
+  ) +
+  stat_bin(
+    aes(y = after_stat(count / sum(count)), 
+        label = round(after_stat(count / sum(count)) * 100, 1)),
+    binwidth = 5,
+    geom = "text",
+    vjust = -0.5,
+    size = 2.5
+  ) +
+  labs(
+    title = "Histogramme des parts de transferts dans le revenu total",
+    x = "Part des transferts dans le revenu total (%)",
+    y = "Proportion"
+  ) +
+  theme_minimal()
+
+```
+
+
+## 3.  Analyse de la relation entre transferts reçus et revenu total non issu du rendement agricole (emploi,non emploi et transfert)
+
+### Interprétation du graphique
+
+L'histogramme montre une distribution asymétrique des parts de transferts dans le revenu total, avec deux pics principaux : un premier pic important à 29,8% et un second pic plus marqué à 39,2%. La majorité des observations se concentrent entre 0,7% et 3,1%, mais la représentation graphique indique que certains ménages dépendent fortement des transferts. Cette distribution quasi bimodale suggère l'existence de deux sous-populations distinctes : une proportion significative pour qui les transferts représentent une part modeste du revenu (moins de 5%), et une autre pour qui ils constituent une ressource essentielle (plus de 50%), ce qui témoigne de situations de forte dépendance aux transferts pour certains ménages.
+
+
+## 3.  Analyse de la relation entre transferts reçus et revenu total non issu du rendement agricole (emploi, non emploi et transfert)
+
+
+```{r transferts-summary5, echo=FALSE, fig.width=8, fig.height=4}
+
+
+# Filtrer les données valides s'il y en a (revenu total non manquant et >= 0)
+data_revenu <- data_menage_final %>%
+  filter(!is.na(revenu_total), revenu_total >= 0)
+
+# Modèle de régression
+modele_revenu <- lm(revenu_total ~ transfert_total_menage, data = data_revenu)
+
+# Extraire les paramètres
+a_rev <- round(coef(modele_revenu)[1], 2)
+b_rev <- round(coef(modele_revenu)[2], 2)
+r2_rev <- round(summary(modele_revenu)$r.squared, 3)
+p_rev <- formatC(summary(modele_revenu)$coefficients[2, 4], format = "f", digits = 4)
+
+# Texte de l’équation
+eq_text_rev <- paste0("y = ", b_rev, "x + ", a_rev,
+                      "   |   R² = ", r2_rev,
+                      "   |   p = ", p_rev)
+
+# Visualisation
+ggplot(data_revenu, aes(x = transfert_total_menage, y = revenu_total)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "lm", se = TRUE, color = "blue") +
+  annotate("text", 
+           x = 500000, 
+           y = max(data_revenu$revenu_total, na.rm = TRUE) * 0.95,  # Texte haut
+           label = eq_text_rev, 
+           size = 5, 
+           hjust = 0, 
+           color = "black") +
+  labs(
+    x = "Transferts reçus par le ménage (en FCFA)",
+    y = "Revenu total du ménage, hors activités agricoles (en FCFA)",
+    title = "Relation entre transferts reçus et revenu total"
+  ) +
+  coord_cartesian(xlim = c(0, 10000000)) +
+  theme_minimal()
+
+```
+
+
+## 3.  Analyse de la relation entre transferts reçus et revenu total non issu du rendement agricole (emploi, non emploi et transfert)
+
+### Interprétation de la regression
+
+La régression révèle une relation positive significative (p < 0,001) entre transferts et revenus, avec un coefficient de 1,19 (chaque FCFA de revenu supplémentaire étant associé à 1,19 FCFA de transferts en moyenne). Le R² de 0,24 indique une corrélation modérée, où 24% de la variation des transferts s'explique par le revenu.     
+
+Cette relation suggère deux mécanismes probables : les ménages aisés bénéficient de réseaux sociaux plus productifs (transferts privés accrues des diasporas), et/ou les transferts institutionnels (aides publiques, ONG) ciblent partiellement les ménages selon leur niveau de ressources.   
+ 
+La présence de valeurs élevées (jusqu'à 2,5 millions FCFA) montre que l'effet est particulièrement marqué pour certains ménages, possiblement urbains ou avec migrants internationaux.
+
+# Limites du projet  
+
+## Limites du projet   
+  
+### Approche descriptive et corrélationnelle :
+L’analyse repose principalement sur des statistiques descriptives et des corrélations, sans recours à des méthodes économétriques avancées (modèles multivariés, techniques d’identification causale).
+
+### Absence d’interprétation causale :
+Les relations observées entre transferts et bien-être ne peuvent être interprétées comme des liens de causalité.
+
+### Données transversales :
+La base EHCVM 2018 étant transversale, elle ne permet pas de suivre les ménages dans le temps ni de mesurer les effets dynamiques des transferts.
+
+
+## Limites du projet   
+
+### Biais de mesure possibles :
+Les revenus et dépenses sont auto-déclarés, ce qui peut introduire des biais liés à la mémoire, la perception ou la volonté de l’enquêté.
+
+### Indicateurs de bien-être incomplets :
+Des dimensions essentielles comme la nutrition, le logement ou l’accès aux services publics n’ont pas pu être intégrées à l’analyse.
+
+### Typologie éducative simplifiée :
+Le ratio d’individus scolarisés utilisé pour classer les ménages reste une approximation qui ne reflète pas pleinement la complexité des situations éducatives et socioéconomiques.
+
+
+# Conclusion
+
+## Enseignements de l’étude
+  
+    
+### Rôle contrasté des transferts :
+Les transferts jouent un rôle important mais inégal dans le bien-être des ménages sénégalais.
+
+### Effets différenciés selon le niveau de scolarisation :
+L’impact est plus marqué chez les ménages faiblement et très scolarisés.
+
+
+## Enseignements de l’étude
+
+### Impact limité sur la santé :
+Faible pouvoir explicatif des transferts sur les dépenses de santé (R² = 1,6 %).
+
+### Effet significatif sur le revenu total :
+Les transferts expliquent 24 % de la variance du revenu total, suggérant un effet multiplicateur.
+
+
+## Recommandations
+
+
+### Recommandation 1 : ciblage renforcé
+Utiliser des indicateurs de vulnérabilité pour mieux orienter les transferts et anticiper les chocs.
+
+### Recommandation 2 : mobilisation de la diaspora
+Encourager l’usage de plateformes digitales sécurisées pour accroître les flux et renforcer l’effet réseau.
+
+
+## Perspectives
+
+  
+### Vers une stratégie intégrée :
+Une approche combinant protection sociale adaptative et inclusion financière renforcerait la résilience face aux chocs climatiques et économiques, tout en réduisant les inégalités.
